@@ -6,8 +6,7 @@ var answer3 = document.querySelector("#answer3");
 var questResult = document.querySelector("#result");
 var i = 0;
 var timer = document.querySelector("#timerText");
-var count = 75;
-var userAnswers = "";
+var count = 74;
 
 //Variable containing quiz content - Instructions plus quiz questions, answer choices and correct answers. Seven total elements including the instructions
 var theQuestions = [
@@ -88,7 +87,7 @@ showCard();
 
 //Building each card - function to iterate through array theQuestions containing questions and answers choices, and correct answer
 function showCard(){
-    //var questionText = theQuestions[i].question.toString();
+    //Initiates quiz by displaying the first element of theQuestions array with instructions and start button. All other buttons disappear through opacity styling. Increase array increment by 1
     if (i===0){
         var questionText = theQuestions[i].question.toString();
         quizQuestion.append(questionText);
@@ -98,6 +97,7 @@ function showCard(){
         }
         i++;
     }
+    //When within the length of theQuestions array, display each elent of the array with all button opacity set to 1 (visible). Increase array increment by 1
     else if(i < theQuestions.length){
             var questionText = theQuestions[i].question.toString();
             quizQuestion.innerHTML = "";
@@ -113,55 +113,72 @@ function showCard(){
             };
             i++;
     }
+    //Once all questions are answered within the time limit
     else {
-        //if score higher than 
-        quizQuestion.innerHTML = "";
-        quizQuestion.append("You've finished!"); // Add in what the score is
+        quizQuestion.innerHTML = "You've finished!"; // Add in what the score is
         timer.textContent = "Quiz Complete";
+
+        //if you want to submit your score - takes you to the leaderboard
         answer0.innerHTML = "Submit Score";
+
+        //Refreshes the page if you want to try again.
         answer1.innerHTML = "Try Again"
+        answer1.addEventListener("click", refreshPage);
+
+        //Adjusts remaining buttons so invisible
         answer2.style.opacity = 0;
         answer3.style.opacity = 0;
-        //adjust to highscores page - include score, 
     }
 };
-
-function showResult(){
+//Commentary
+function showResult(event){
     //if answer is correct display "Correct!" under the next question, otherwise "Incorrect" under the next question
+    // var element = event.target;
+    // localStorage.setItem("userInput"+i,)
 };
 
+//Sets the interval to count down in all instances when count is greater than 0 and if the quiz is not complete
 function startTimer(){
     interval = setInterval(function() {
+        //When the timer hits zero, the timer stops and displays zero, the bold text reads "Time's out!" and the first button is visible as a Try again/refresh button. All other buttons opacity is set to 0 and not click listeners are present.
         if (count<0) {
             clearInterval(interval);
             timer.textContent = "Time: 0";
-            quizQuestion.innerHTML = "";
-            quizQuestion.append("Time's out!");
-            for(j=0; j<4; j++){this["answer"+j].style.opacity = 0;}
+            quizQuestion.innerHTML = "Time's out!";
+            answer0.textContent = "Try Again"
+            answer0.addEventListener("click", refreshPage);
+            for(j=1; j<4; j++){this["answer"+j].style.opacity = 0;}
         }
-        else if (i >= 7){
+        else if (i >= 7){  // need to fix this to be something more concrete
             clearInterval(interval);
             timer.textContent = "Quiz Complete.";
         }
         else{
             //another nested if to decrement timer an additional 10 seconds if the user's input is incorrect
-            timer.textContent = "Timer: " + count;
+            timer.textContent = "Time: " + count;
             count--;
         }
-    }, 1000);
+    }, 100); //remember to change back to 1000 when not testing
 };
 
-//Evenlistener to detect click on any button and execute functions to show the next question and the result to the previous question.
+//Forloop for event listeners so that when any button is clicked, the next question is populated through showCard, the result is stored and shown to the user through showResult, and starts the time in the beginning when there are 74 seconds left.
 for(var k = 0; k < theQuestions[i].answers.length; k++){
     this["answer"+k].addEventListener("click",function(){
-        showCard();
-        showResult();
-        //Start timer after clicking start
-        if(count===75){
+        //Start timer after clicking start, execute showCard and showResult
+        if(count===74){
             startTimer();
+            showCard();
+            showResult();
+        }
+        //If within the time limit, continue with event listener; otherwise, buttons no longer have click listeners through this loop
+        else if(count < 74 && count > 0){
+            showCard();
+            showResult();
         }
     });         
 };
 
-
-//add on click if button clicked === correct answer then display "Correct" otherwise "Nerp"
+//Reloads the window
+function refreshPage(){
+    window.location.reload();
+}
