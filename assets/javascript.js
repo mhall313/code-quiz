@@ -7,8 +7,9 @@ var questResult = document.querySelector("#result");
 var i = 0;
 var timer = document.querySelector("#timerText");
 var count = 75;
+var userAnswers = "";
 
-
+//Variable containing quiz content - Instructions plus quiz questions, answer choices and correct answers. Seven total elements including the instructions
 var theQuestions = [
     //First Question
     {
@@ -81,15 +82,12 @@ var theQuestions = [
             correctAnswer: "3. cboth 1. and 2."
         }
 ];
+
 //Show quiz instructions
 showCard();
 
 //Building each card - function to iterate through array theQuestions containing questions and answers choices, and correct answer
 function showCard(){
-    //Start timer
-    // if(count===75){
-    //     startTimer();
-    // }
     //var questionText = theQuestions[i].question.toString();
     if (i===0){
         var questionText = theQuestions[i].question.toString();
@@ -101,12 +99,6 @@ function showCard(){
         i++;
     }
     else if(i < theQuestions.length){
-        if(count===75){
-            startTimer();
-            //statement stops here and you need another click to go to else
-        }
-        else{
-            //If the timer has time left, populate next question
             var questionText = theQuestions[i].question.toString();
             quizQuestion.innerHTML = "";
             //Show answer buttons and populate with next questions answer choices
@@ -120,28 +112,22 @@ function showCard(){
                 this["answer" + j].textContent = theQuestions[i].answers[j];
             };
             i++;
-        }
     }
     else {
+        //if score higher than 
         quizQuestion.innerHTML = "";
-        quizQuestion.append("You've finished!");
-        for(j=0; j<4; j++){
-            this["answer"+j].style.opacity = 0;
-        }
+        quizQuestion.append("You've finished!"); // Add in what the score is
+        timer.textContent = "Quiz Complete";
+        answer0.innerHTML = "Submit Score";
+        answer1.innerHTML = "Try Again"
+        answer2.style.opacity = 0;
+        answer3.style.opacity = 0;
         //adjust to highscores page - include score, 
     }
-
 };
 
 function showResult(){
     //if answer is correct display "Correct!" under the next question, otherwise "Incorrect" under the next question
-    // if(){
-    //     questResult.innerHTML("Great Job!");
-    // }
-    // else{
-    //     questResult.innerHTML("Wrong answer!");
-    // }
-
 };
 
 function startTimer(){
@@ -153,11 +139,16 @@ function startTimer(){
             quizQuestion.append("Time's out!");
             for(j=0; j<4; j++){this["answer"+j].style.opacity = 0;}
         }
+        else if (i >= 7){
+            clearInterval(interval);
+            timer.textContent = "Quiz Complete.";
+        }
         else{
+            //another nested if to decrement timer an additional 10 seconds if the user's input is incorrect
             timer.textContent = "Timer: " + count;
             count--;
         }
-    }, 100);
+    }, 1000);
 };
 
 //Evenlistener to detect click on any button and execute functions to show the next question and the result to the previous question.
@@ -165,6 +156,10 @@ for(var k = 0; k < theQuestions[i].answers.length; k++){
     this["answer"+k].addEventListener("click",function(){
         showCard();
         showResult();
+        //Start timer after clicking start
+        if(count===75){
+            startTimer();
+        }
     });         
 };
 
