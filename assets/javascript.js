@@ -5,7 +5,6 @@ var answer2 = document.querySelector("#answer2");
 var answer3 = document.querySelector("#answer3");
 var questResult = document.querySelector("#result");
 var i = 0;
-
 var timer = document.querySelector("#timerText");
 var count = 75;
 
@@ -85,14 +84,14 @@ var theQuestions = [
 //Show quiz instructions
 showCard();
 
-//Function iterate through the object theQuestions containing questions and answers
+//Building each card - function to iterate through array theQuestions containing questions and answers choices, and correct answer
 function showCard(){
+    //Start timer
+    // if(count===75){
+    //     startTimer();
+    // }
     //var questionText = theQuestions[i].question.toString();
     if (i===0){
-        // answer0.addEventListener("click", function(){
-        //     countDown();
-        // });
-
         var questionText = theQuestions[i].question.toString();
         quizQuestion.append(questionText);
         answer0.innerHTML = "Start!";
@@ -102,22 +101,24 @@ function showCard(){
         i++;
     }
     else if(i < theQuestions.length){
-        var questionText = theQuestions[i].question.toString();
-        quizQuestion.innerHTML = "";
-        answer0.innerHTML = "";   
-        for(j=1; j<4; j++){
-            this["answer"+j].style.opacity = 1;
+        if(count===75){
+            startTimer();
         }
-        quizQuestion.append(questionText);
-
-        //Loop to add multiple choice answers to buttons
-        for(var j = 0; j < theQuestions[i].answers.length; j++){
-            this["answer" + j].textContent = theQuestions[i].answers[j];
-        };
-        i++;
-        if(count===0){
-            clearInterval(interval);
-            timer.textContent = "Time's out!"
+        else{
+            //If the timer has time left, populate next question
+            var questionText = theQuestions[i].question.toString();
+            quizQuestion.innerHTML = "";
+            //Show answer buttons and populate with next questions answer choices
+            //answer0.innerHTML = "";   
+            for(j=1; j<4; j++){
+                this["answer"+j].style.opacity = 1;
+            }
+            quizQuestion.append(questionText);
+            //Loop to add multiple choice answers to buttons
+            for(var j = 0; j < theQuestions[i].answers.length; j++){
+                this["answer" + j].textContent = theQuestions[i].answers[j];
+            };
+            i++;
         }
     }
     else {
@@ -126,7 +127,7 @@ function showCard(){
         for(j=0; j<4; j++){
             this["answer"+j].style.opacity = 0;
         }
-        //adjust to highscores page
+        //adjust to highscores page - include score, 
     }
 
 };
@@ -142,13 +143,23 @@ function showResult(){
 
 };
 
-function countDown(){
+function startTimer(){
     interval = setInterval(function() {
      timer.textContent = "Timer: " + count;
         count--;
       
-    }, 1000);
+    }, 100);
 };
+
+if (count<0) {
+    clearInterval(interval);
+    timer.textContent = "Timer: 0";
+    quizQuestion.innerHTML = "";
+    quizQuestion.append("Time's out!");
+    for(j=0; j<4; j++){
+        this["answer"+j].style.opacity = 0;
+    }
+}
 
 //Evenlistener to detect click on any button and execute functions to show the next question and the result to the previous question.
 for(var k = 0; k < theQuestions[i].answers.length; k++){
