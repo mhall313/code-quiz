@@ -103,6 +103,7 @@ function showCard(){
     else if(i < theQuestions.length){
         if(count===75){
             startTimer();
+            //statement stops here and you need another click to go to else
         }
         else{
             //If the timer has time left, populate next question
@@ -145,21 +146,19 @@ function showResult(){
 
 function startTimer(){
     interval = setInterval(function() {
-     timer.textContent = "Timer: " + count;
-        count--;
-      
+        if (count<0) {
+            clearInterval(interval);
+            timer.textContent = "Time: 0";
+            quizQuestion.innerHTML = "";
+            quizQuestion.append("Time's out!");
+            for(j=0; j<4; j++){this["answer"+j].style.opacity = 0;}
+        }
+        else{
+            timer.textContent = "Timer: " + count;
+            count--;
+        }
     }, 100);
 };
-
-if (count<0) {
-    clearInterval(interval);
-    timer.textContent = "Timer: 0";
-    quizQuestion.innerHTML = "";
-    quizQuestion.append("Time's out!");
-    for(j=0; j<4; j++){
-        this["answer"+j].style.opacity = 0;
-    }
-}
 
 //Evenlistener to detect click on any button and execute functions to show the next question and the result to the previous question.
 for(var k = 0; k < theQuestions[i].answers.length; k++){
