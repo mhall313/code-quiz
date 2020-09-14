@@ -4,11 +4,12 @@ var answer1 = document.querySelector("#answer1");
 var answer2 = document.querySelector("#answer2");
 var answer3 = document.querySelector("#answer3");
 var questResult = document.querySelector("#result");
-var timer = document.querySelector("#timerText");
-
-var buttons = document.querySelector(".btn");
 var i = 0;
+
+var timer = document.querySelector("#timerText");
 var count = 75;
+
+
 var theQuestions = [
     //First Question
     {
@@ -27,16 +28,59 @@ var theQuestions = [
     },
     //Third Question
     {
-        question: "NEW Question?",
+        question: "Arrays are collections of elements marked with indexes starting with ___.",
         answers: [
-            "1. Answer",
-            "2. JAnd anotha one",
-            "3. c",
-            "4. d"
+            "1. 1",
+            "2. 0",
+            "3. Neither",
+            "4. Either"
         ],
-        correctAnswer: ""
+        correctAnswer: "2. 0"
     },
-
+    //Fourth Question
+    {
+        question: "Which method would you call to index an array?",
+        answers: [
+            "1. .callIndex()",
+            "2. .lowerCase()",
+            "3. .getIndex()",
+            "4. .indexOf()"
+        ],
+        correctAnswer: "4. .indexOf()"
+    },
+    //Fifth Question
+    {
+        question: "Variables are the ____ of programming.",
+        answers: [
+            "1. nouns",
+            "2. verbs",
+            "3. cats",
+            "4. wait, cats?"
+        ],
+        correctAnswer: "1. nouns"
+    },
+    //Sixth Question
+    {
+        question: "_____ is a quick expression that prints content to the debugger.",
+        answers: [
+            "1. logDebugger",
+            "2. debugger.log",
+            "3. logConsole",
+            "4. console.log"
+        ],
+        correctAnswer: "4. console.log"
+    },
+        //Seventh Question
+        {
+            question: "Which method will add the parameter given to the html element <p>?",
+            answers: [
+                "1. p.textContent()",
+                "2. p.innerHTML()",
+                "3. both 1. and 2.",
+                "4. neither 1. nor 2."
+            ],
+            correctAnswer: "3. cboth 1. and 2."
+        }
 ];
 //Show quiz instructions
 showCard();
@@ -45,58 +89,74 @@ showCard();
 function showCard(){
     //var questionText = theQuestions[i].question.toString();
     if (i===0){
+        // answer0.addEventListener("click", function(){
+        //     countDown();
+        // });
+
         var questionText = theQuestions[i].question.toString();
         quizQuestion.append(questionText);
         answer0.innerHTML = "Start!";
-        answer1.style.opacity = 0;
-        answer2.style.opacity = 0;
-        answer3.style.opacity = 0;
+        for(j=1; j<4; j++){
+            this["answer"+j].style.opacity = 0;
+        }
         i++;
-        answer0.addEventListener("click", function(){
-            countDown();
-        });
     }
     else if(i < theQuestions.length){
         var questionText = theQuestions[i].question.toString();
         quizQuestion.innerHTML = "";
         answer0.innerHTML = "";   
-        answer1.style.opacity = 1;
-        answer2.style.opacity = 1;
-        answer3.style.opacity = 1;
+        for(j=1; j<4; j++){
+            this["answer"+j].style.opacity = 1;
+        }
         quizQuestion.append(questionText);
-        //add attribute btn-index to iterate through buttons and assign answer property
+
+        //Loop to add multiple choice answers to buttons
         for(var j = 0; j < theQuestions[i].answers.length; j++){
-            this["answer"+j].textContent = theQuestions[i].answers[j];
-                       
+            this["answer" + j].textContent = theQuestions[i].answers[j];
         };
         i++;
+        if(count===0){
+            clearInterval(interval);
+            timer.textContent = "Time's out!"
+        }
     }
     else {
-        //window.location.href = "highscores.html";
+        quizQuestion.innerHTML = "";
+        quizQuestion.append("You've finished!");
+        for(j=0; j<4; j++){
+            this["answer"+j].style.opacity = 0;
+        }
+        //adjust to highscores page
     }
 
 };
 
 function showResult(){
     //if answer is correct display "Correct!" under the next question, otherwise "Incorrect" under the next question
+    // if(){
+    //     questResult.innerHTML("Great Job!");
+    // }
+    // else{
+    //     questResult.innerHTML("Wrong answer!");
+    // }
 
 };
 
 function countDown(){
-
-    setInterval(function() {
-        timer.textContent = "Timer:" + count;
+    interval = setInterval(function() {
+     timer.textContent = "Timer: " + count;
         count--;
       
-        }, 1000);
+    }, 1000);
 };
 
-//Executes functions to show the next question and the result to the previous question.
-buttons.addEventListener("click", function(event){
-    showCard();
-    showResult();
-});
-
+//Evenlistener to detect click on any button and execute functions to show the next question and the result to the previous question.
+for(var k = 0; k < theQuestions[i].answers.length; k++){
+    this["answer"+k].addEventListener("click",function(){
+        showCard();
+        showResult();
+    });         
+};
 
 
 //add on click if button clicked === correct answer then display "Correct" otherwise "Nerp"
