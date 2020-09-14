@@ -4,11 +4,11 @@ var answer1 = document.querySelector("#answer1");
 var answer2 = document.querySelector("#answer2");
 var answer3 = document.querySelector("#answer3");
 var questResult = document.querySelector("#result");
-var timer = document.querySelector("#timertext");
+var timer = document.querySelector("#timerText");
 
 var buttons = document.querySelector(".btn");
 var i = 0;
-var count = 0;
+var count = 75;
 var theQuestions = [
     //First Question
     {
@@ -52,6 +52,9 @@ function showCard(){
         answer2.style.opacity = 0;
         answer3.style.opacity = 0;
         i++;
+        answer0.addEventListener("click", function(){
+            countDown();
+        });
     }
     else if(i < theQuestions.length){
         var questionText = theQuestions[i].question.toString();
@@ -69,7 +72,7 @@ function showCard(){
         i++;
     }
     else {
-        window.location.href = "highscores.html";
+        //window.location.href = "highscores.html";
     }
 
 };
@@ -77,6 +80,15 @@ function showCard(){
 function showResult(){
     //if answer is correct display "Correct!" under the next question, otherwise "Incorrect" under the next question
 
+};
+
+function countDown(){
+
+    setInterval(function() {
+        timer.textContent = "Timer:" + count;
+        count--;
+      
+        }, 1000);
 };
 
 //Executes functions to show the next question and the result to the previous question.
