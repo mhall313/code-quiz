@@ -133,7 +133,7 @@ function showCard(event){
         showResult();
     }
     //Once all questions are answered within the time limit
-    else {
+    else if (i === theQuestions.length){
         localStorage.setItem(("userInput" + i), target);
         showResult();
         quizQuestion.innerHTML = "You've finished! Your score is " + score + "! Enter your name below and click submit to save your score."; 
@@ -156,26 +156,27 @@ function showCard(event){
     }
 }
 
+//Function to move through theQuestions array with iterator i, log and validate user input against the correct answer of each element in the array theQuestions
 function showResult(){
     if(i===0){
-        
+      //wait for click to move past start menu to the first question  
     }
     else if(i <= theQuestions.length){
         var correctText = theQuestions[(i-1)].correctAnswer.toString();
         var userText = localStorage.getItem(("userInput")+i);
         if (correctText === userText){
             questResult.innerHTML = "";
-            questResult.append("Correct!");
+            questResult.append("Correct! The answer was " + correctText);
             score = score + 10
         }
         else{
             questResult.innerHTML = "";
-            questResult.append("Incorrect");
+            questResult.append("Incorrect. The answer was not " + userText);
             count = count - 10;
         }
     }
     else{
-
+        //I think this isn't necessary. Will verify when brain works again
     }
     i++;
 }
@@ -187,8 +188,9 @@ function startTimer(){
         if (count<0) {
             clearInterval(interval);
             timer.textContent = "Time: 0";
-            quizQuestion.innerHTML = "Time's out!";
+            quizQuestion.innerHTML = "Time's out! Your score is " + score + ". Try again, finish the quiz and log your score to the score board!";
             answer0.innerHTML = "Try Again"
+            questResult.innerHTML = "";
             answer0.addEventListener("click", refreshPage);
             answer1.style.opacity = 0;
             answer2.style.opacity = 0;
@@ -206,9 +208,13 @@ function startTimer(){
         }
     }, 1000);
 }
+
 //Commentary
 function submitScore(){
-
+    // take userIni inner text and store to local storage with score
+    localStorage.setItem("highscore", userIni.value);
+    //make high score page that appends each new userIni and high score to a list
+    location.href = "highscores.html"
 }
 
 //Reloads the window to take quiz again
