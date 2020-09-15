@@ -44,6 +44,6 @@ function renderHS(){
     else{
         highSc.innerHTML = "";
         highSc.append("Click the link in the top left corner to take the quiz and log your score!");
+        localStorage.removeItem("scores");
     }
-
 }
