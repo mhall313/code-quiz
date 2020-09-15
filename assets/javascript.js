@@ -143,6 +143,12 @@ function startTimer(){
             clearInterval(interval);
             timer.textContent = "Time: 0";
             quizQuestion.innerHTML = "Time's out!";
+            answer0.innerHTML = "Try Again"
+            answer0.addEventListener("click", refreshPage);
+            answer1.style.opacity = 0;
+            answer2.style.opacity = 0;
+            answer3.style.opacity = 0;
+
         }
         //Once all questions are answeres, the time is cleared and the timer displays "Quiz Complete"
         else if (i >= 7){
@@ -154,7 +160,7 @@ function startTimer(){
             timer.textContent = "Time: " + count;
             count--;
         }
-    }, 1000);
+    }, 100);
 }
 //Commentary
 function submitScore(){
@@ -164,4 +170,5 @@ function submitScore(){
 //Reloads the window to take quiz again
 function refreshPage(){
     window.location.reload();
+    localStorage.clear();
 }
