@@ -135,9 +135,12 @@ function showCard(event){
     //Once all questions are answered within the time limit
     else {
         localStorage.setItem(("userInput" + i), target);
+        showResult();
         quizQuestion.innerHTML = "You've finished! Your score is " + score + "! Enter your name below and click submit to save your score."; 
         timer.textContent = "Quiz Complete";
         userIni.style.opacity = 1;
+        questResult.innerHTML = "";
+        questResult.append("Bring in the Dancing Lobsters!");
 
         //if you want to submit your score - takes you to the leaderboard
         answer0.innerHTML = "Submit Score";
@@ -155,16 +158,21 @@ function showCard(event){
 
 function showResult(){
     if(i===0){
-        console.log(i);
+        
     }
     else if(i <= theQuestions.length){
         var correctText = theQuestions[(i-1)].correctAnswer.toString();
         var userText = localStorage.getItem(("userInput")+i);
-        console.log(i);
-        console.log(userText);
-        console.log(i);
-        console.log(correctText);  
-        console.log(i); 
+        if (correctText === userText){
+            questResult.innerHTML = "";
+            questResult.append("Correct!");
+            score = score + 10
+        }
+        else{
+            questResult.innerHTML = "";
+            questResult.append("Incorrect");
+            count = count - 10;
+        }
     }
     else{
 
