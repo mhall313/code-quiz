@@ -101,34 +101,19 @@ answer0.addEventListener("click",function(){
 
 
 //Building each card - function to iterate through array theQuestions containing questions and answers choices, and correct answer
-function showCard(){
+function showCard(event){
+    var target = event.target.textContent;
     //When within the length of theQuestions array, display each elment of the array with all button opacity set to 1 (visible). Increase array increment by 1
     if(i < theQuestions.length){
         var questionText = theQuestions[i].question.toString();
         quizQuestion.innerHTML = "";
-        //Show answer buttons and populate with next questions answer choices
-        //answer0.innerHTML = "";   
-        for(j=1; j<4; j++){
-            this["answer"+j].style.opacity = 1;
-        }
         quizQuestion.append(questionText);
-        //Loop to add multiple choice answers to buttons
+        //Show answer buttons and populate with next questions
         for(var j = 0; j < theQuestions[i].answers.length; j++){
             this["answer" + j].textContent = theQuestions[i].answers[j];
+            this["answer"+j].style.opacity = 1;
         };
-        console.log(i);
-        answer0.addEventListener("click",function(){
-            localStorage.setItem("userInput"+(i), answer0.innerHTML);
-        });
-        answer1.addEventListener("click",function(){
-            localStorage.setItem("userInput"+(i), answer1.innerHTML);
-        });
-        answer2.addEventListener("click",function(){
-            localStorage.setItem("userInput"+(i), answer2.innerHTML);
-        });
-        answer3.addEventListener("click",function(){
-            localStorage.setItem("userInput"+(i), answer3.innerHTML);
-        });
+        localStorage.setItem("userInput" + (i), target);
         i++;
     }
     //Once all questions are answered within the time limit
@@ -158,16 +143,10 @@ function startTimer(){
             clearInterval(interval);
             timer.textContent = "Time: 0";
             quizQuestion.innerHTML = "Time's out!";
-            answer0.textContent = "Try Again"
-            answer0.addEventListener("click", refreshPage);
-            answer1.style.opacity = 0;
-            answer2.style.opacity = 0;
-            answer3.style.opacity = 0;
         }
         //Once all questions are answeres, the time is cleared and the timer displays "Quiz Complete"
         else if (i >= 7){
             clearInterval(interval);
-            timer.textContent = "Quiz Complete.";
         }
         //For the duration of the quiz the timer continue to count down. If the user answers incorrectly, the timer decrements an additional 10 seconds
         else{ 
