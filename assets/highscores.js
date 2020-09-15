@@ -5,11 +5,9 @@ highSc.append("High Scores");
 var scores = [];
 
 //what do we need to do
-//we need to store the high score to other high scores upon load
-//we need to then display the stored high scores in a list
+//i need to adjust so that the high scores aren
+
 init();
-storeHS();
-renderHS();
 
 function init(){
 
@@ -18,13 +16,17 @@ function init(){
     if(storedHS !== null ){
         scores = storedHS;
     }
+    storeHS();
+    renderHS();
 }
 
 function storeHS(){
     var listIt = localStorage.getItem("highScore");
     var userSc = localStorage.getItem("userScore");
-    scores.push(listIt + " : " + userSc + " melanpoints");
-    localStorage.setItem("scores", JSON.stringify(scores));
+    if(scores[scores.length-1]!= (listIt + " : " + userSc + " melanpoints")){
+        scores.push(listIt + " : " + userSc + " melanpoints");
+        localStorage.setItem("scores", JSON.stringify(scores));
+    }
 }
 
 function renderHS(){
@@ -34,4 +36,5 @@ function renderHS(){
         liEl.textContent = daScore;
         listSc.appendChild(liEl);
     }
+
 }
