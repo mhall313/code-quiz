@@ -136,7 +136,7 @@ function showCard(event){
     else if (i === theQuestions.length){
         localStorage.setItem(("userInput" + i), target);
         showResult();
-        quizQuestion.innerHTML = "You've finished! Your score is " + score + "! Enter your name below and click submit to save your score."; 
+        quizQuestion.innerHTML = "You've finished! Your score is " + score + " melanpoints! Enter your name below and click submit to save your score."; 
         timer.textContent = "Quiz Complete";
         userIni.style.opacity = 1;
         questResult.innerHTML = "";
