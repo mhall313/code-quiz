@@ -163,11 +163,11 @@ function showResult(){
     }
     else if(i <= theQuestions.length){
         var correctText = theQuestions[(i-1)].correctAnswer.toString();
-        var userText = localStorage.getItem(("userInput")+i);
+        var userText = localStorage.getItem("userInput"+i);
         if (correctText === userText){
             questResult.innerHTML = "";
             questResult.append("Correct! The answer was " + correctText);
-            score = score + 10
+            score = score + 1000;
         }
         else{
             questResult.innerHTML = "";
@@ -212,8 +212,8 @@ function startTimer(){
 //Commentary
 function submitScore(){
     // take userIni inner text and store to local storage with score
-    localStorage.setItem("highscore", userIni.value);
-    //make high score page that appends each new userIni and high score to a list
+    localStorage.setItem("highScore", userIni.value);
+    localStorage.setItem("userScore", score);
     location.href = "highscores.html"
 }
 
