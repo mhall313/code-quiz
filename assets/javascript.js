@@ -4,14 +4,16 @@ var answer0 = document.querySelector("#answer0");
 var answer1 = document.querySelector("#answer1");
 var answer2 = document.querySelector("#answer2");
 var answer3 = document.querySelector("#answer3");
+var userIni = document.querySelector("#initials");
 var questResult = document.querySelector("#result");
 var timer = document.querySelector("#timerText");
 
 //Iterative Variable for showCard function to move through array theQuestions and signal when quiz is complete
 var i = 0;
-
 //Variable to increment timer
 var count = 59;
+//variable for score
+var score = 0;
 
 //Variable containing quiz content - Quiz questions, answer choices and correct answers. Six total elements including the instructions
 var theQuestions = [
@@ -83,10 +85,11 @@ var theQuestions = [
         }
 ];
 
-//Initially hide 3 buttons
+//Initially hide 3 buttons and Name input for scoreboard
 answer1.style.opacity = 0;
 answer2.style.opacity = 0;
 answer3.style.opacity = 0;
+userIni.style.opacity = 0;
 
 //Initial set up to show quiz instructions and Start in button
 quizQuestion.append("Test your coding knowledge before the time runs out! Get an answer wrong and the time drops by 10 seconds. When you're done, log your high score!");
@@ -104,7 +107,7 @@ answer0.addEventListener("click",function(){
 function showCard(event){
     var target = event.target.textContent;
     //When within the length of theQuestions array, display each elment of the array with all button opacity set to 1 (visible). Increase array increment by 1
-    if(i < theQuestions.length){
+    if ( i === 0){
         var questionText = theQuestions[i].question.toString();
         quizQuestion.innerHTML = "";
         quizQuestion.append(questionText);
@@ -113,14 +116,28 @@ function showCard(event){
             this["answer" + j].textContent = theQuestions[i].answers[j];
             this["answer"+j].style.opacity = 1;
         };
-        localStorage.setItem("userInput" + (i), target);
-        i++;
+        showResult();
+    }
+    else if(i < theQuestions.length){
+        var questionText = theQuestions[i].question.toString();
+        quizQuestion.innerHTML = "";
+        quizQuestion.append(questionText);
+        //Show answer buttons and populate with next questions
+        for(var j = 0; j < theQuestions[i].answers.length; j++){
+            this["answer" + j].textContent = theQuestions[i].answers[j];
+            this["answer"+j].style.opacity = 1;
+        };
+        //Sotre the users click to local storage as userInput[i]
+        localStorage.setItem("userInput" + i, target);
+        //If the users input equals the correct answers, add points. If the users input is wrong, do not add point and decrement an extra 10 seconds
+        showResult();
     }
     //Once all questions are answered within the time limit
     else {
-        localStorage.setItem("userInput" + (i), target);
-        quizQuestion.innerHTML = "You've finished!"; // Add in what the score is
+        localStorage.setItem(("userInput" + i), target);
+        quizQuestion.innerHTML = "You've finished! Your score is " + score + "! Enter your name below and click submit to save your score."; 
         timer.textContent = "Quiz Complete";
+        userIni.style.opacity = 1;
 
         //if you want to submit your score - takes you to the leaderboard
         answer0.innerHTML = "Submit Score";
@@ -134,6 +151,25 @@ function showCard(event){
         answer2.style.opacity = 0;
         answer3.style.opacity = 0;
     }
+}
+
+function showResult(){
+    if(i===0){
+        console.log(i);
+    }
+    else if(i <= theQuestions.length){
+        var correctText = theQuestions[(i-1)].correctAnswer.toString();
+        var userText = localStorage.getItem(("userInput")+i);
+        console.log(i);
+        console.log(userText);
+        console.log(i);
+        console.log(correctText);  
+        console.log(i); 
+    }
+    else{
+
+    }
+    i++;
 }
 
 //Sets the interval to count down in all instances when count is greater than 0 and if the quiz is not complete
@@ -155,9 +191,8 @@ function startTimer(){
         else if (i >= 6){
             clearInterval(interval);
         }
-        //For the duration of the quiz the timer continue to count down. If the user answers incorrectly, the timer decrements an additional 10 seconds
+        //For the duration of the quiz the timer continues to count down. If the user answers incorrectly, the timer decrements an additional 10 seconds
         else{ 
-            //another nested if to decrement timer an additional 10 seconds if the user's input is incorrect
             timer.textContent = "Time: " + count;
             count--;
         }
