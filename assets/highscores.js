@@ -18,6 +18,7 @@ function init(){
     if(storedHS !== null ){
         scores = storedHS;
     }
+    console.log(storedHS);
 }
 
 function storeHS(){
