@@ -1,20 +1,20 @@
+//Slew of variables to call upon HTML content
 var quizQuestion = document.querySelector("#quiz-question");
 var answer0 = document.querySelector("#answer0");
 var answer1 = document.querySelector("#answer1");
 var answer2 = document.querySelector("#answer2");
 var answer3 = document.querySelector("#answer3");
 var questResult = document.querySelector("#result");
-var i = 0;
 var timer = document.querySelector("#timerText");
-var count = 74;
 
-//Variable containing quiz content - Instructions plus quiz questions, answer choices and correct answers. Seven total elements including the instructions
+var quizComp = 0;
+
+//Variable to increment timer
+var count = 59;
+
+//Variable containing quiz content - Quiz questions, answer choices and correct answers. Six total elements including the instructions
 var theQuestions = [
     //First Question
-    {
-        question: "Test your coding knowledge before the time runs out! Get an answer wrong and the time drops by 10 seconds. When you're done, log your high score!",
-    },
-    //Second Question
     {
         question: "What are the three fundamental programming languages of the modern web?",
         answers: [
@@ -25,7 +25,7 @@ var theQuestions = [
         ],
         correctAnswer: "2. Javascript, HTML, CSS"
     },
-    //Third Question
+    //Second Question
     {
         question: "Arrays are collections of elements marked with indexes starting with ___.",
         answers: [
@@ -36,7 +36,7 @@ var theQuestions = [
         ],
         correctAnswer: "2. 0"
     },
-    //Fourth Question
+    //Third Question
     {
         question: "Which method would you call to index an array?",
         answers: [
@@ -47,7 +47,7 @@ var theQuestions = [
         ],
         correctAnswer: "4. .indexOf()"
     },
-    //Fifth Question
+    //Fourth Question
     {
         question: "Variables are the ____ of programming.",
         answers: [
@@ -58,7 +58,7 @@ var theQuestions = [
         ],
         correctAnswer: "1. nouns"
     },
-    //Sixth Question
+    //Fifth Question
     {
         question: "_____ is a quick expression that prints content to the debugger.",
         answers: [
@@ -69,7 +69,7 @@ var theQuestions = [
         ],
         correctAnswer: "4. console.log"
     },
-        //Seventh Question
+    //Sixth Question
         {
             question: "Which method will add the parameter given to the html element <p>?",
             answers: [
@@ -82,44 +82,49 @@ var theQuestions = [
         }
 ];
 
-//Show quiz instructions
-showCard();
+//Initially hide 3 buttons
+answer1.style.opacity = 0;
+answer2.style.opacity = 0;
+answer3.style.opacity = 0;
+
+//Initial set up to show quiz instructions and Start in button
+quizQuestion.append("Test your coding knowledge before the time runs out! Get an answer wrong and the time drops by 10 seconds. When you're done, log your high score!");
+answer0.innerHTML = "Start!";
+
+//Star quiz and timer
+answer0.addEventListener("click",function(){
+    if(count===59){
+        showCard();
+        startTimer();
+    }    
+});
 
 //Building each card - function to iterate through array theQuestions containing questions and answers choices, and correct answer
 function showCard(){
-    //Initiates quiz by displaying the first element of theQuestions array with instructions and start button. All other buttons disappear through opacity styling. Increase array increment by 1
-    if (i===0){
-        var questionText = theQuestions[i].question.toString();
-        quizQuestion.append(questionText);
-        answer0.innerHTML = "Start!";
-        for(j=1; j<4; j++){
-            this["answer"+j].style.opacity = 0;
-        }
-        i++;
-    }
+    //Starts quiz by displaying the first element of theQuestions array. All other buttons disappear through opacity styling. Increase array increment by 1
     //When within the length of theQuestions array, display each elent of the array with all button opacity set to 1 (visible). Increase array increment by 1
-    else if(i < theQuestions.length){
-            var questionText = theQuestions[i].question.toString();
-            quizQuestion.innerHTML = "";
-            //Show answer buttons and populate with next questions answer choices
-            //answer0.innerHTML = "";   
-            for(j=1; j<4; j++){
-                this["answer"+j].style.opacity = 1;
-            }
-            quizQuestion.append(questionText);
-            //Loop to add multiple choice answers to buttons
-            for(var j = 0; j < theQuestions[i].answers.length; j++){
-                this["answer" + j].textContent = theQuestions[i].answers[j];
-            };
-            i++;
+    for(var i = 0; i < theQuestions.length; i++){
+        var questionText = theQuestions[i].question.toString();
+        quizQuestion.innerHTML = "";
+        //Show answer buttons and populate with next questions answer choices
+        //answer0.innerHTML = "";   
+        for(j=1; j<4; j++){
+            this["answer"+j].style.opacity = 1;
+        }
+        quizQuestion.append(questionText);
+        //Loop to add multiple choice answers to buttons
+        for(var j = 0; j < theQuestions[i].answers.length; j++){
+            this["answer" + j].textContent = theQuestions[i].answers[j];
+        };
     }
     //Once all questions are answered within the time limit
-    else {
+    if(i > theQuestions.length) {
         quizQuestion.innerHTML = "You've finished!"; // Add in what the score is
         timer.textContent = "Quiz Complete";
 
         //if you want to submit your score - takes you to the leaderboard
         answer0.innerHTML = "Submit Score";
+        answer0.addEventListener("click", submitScore);
 
         //Refreshes the page if you want to try again.
         answer1.innerHTML = "Try Again"
@@ -129,14 +134,8 @@ function showCard(){
         answer2.style.opacity = 0;
         answer3.style.opacity = 0;
     }
-};
-//Commentary
-function showResult(event){
-    //if answer is correct display "Correct!" under the next question, otherwise "Incorrect" under the next question
-    // var element = event.target;
-    // localStorage.setItem("userInput"+i,)
-};
-
+    quizComp ++;
+}
 //Sets the interval to count down in all instances when count is greater than 0 and if the quiz is not complete
 function startTimer(){
     interval = setInterval(function() {
@@ -147,36 +146,23 @@ function startTimer(){
             quizQuestion.innerHTML = "Time's out!";
             answer0.textContent = "Try Again"
             answer0.addEventListener("click", refreshPage);
-            for(j=1; j<4; j++){this["answer"+j].style.opacity = 0;}
+            answer1.style.opacity = 0;
+            answer2.style.opacity = 0;
+            answer3.style.opacity = 0;
         }
-        else if (i >= 7){  // need to fix this to be something more concrete
+        //Once all questions are answeres, the time is cleared and the timer displays "Quiz Complete"
+        else if (quizComp >= 7){
             clearInterval(interval);
             timer.textContent = "Quiz Complete.";
         }
-        else{
+        //For the duration of the quiz the timer continue to count down. If the user answers incorrectly, the timer decrements an additional 10 seconds
+        else{ 
             //another nested if to decrement timer an additional 10 seconds if the user's input is incorrect
             timer.textContent = "Time: " + count;
             count--;
         }
-    }, 100); //remember to change back to 1000 when not testing
-};
-
-//Forloop for event listeners so that when any button is clicked, the next question is populated through showCard, the result is stored and shown to the user through showResult, and starts the time in the beginning when there are 74 seconds left.
-for(var k = 0; k < theQuestions[i].answers.length; k++){
-    this["answer"+k].addEventListener("click",function(){
-        //Start timer after clicking start, execute showCard and showResult
-        if(count===74){
-            startTimer();
-            showCard();
-            showResult();
-        }
-        //If within the time limit, continue with event listener; otherwise, buttons no longer have click listeners through this loop
-        else if(count < 74 && count > 0){
-            showCard();
-            showResult();
-        }
-    });         
-};
+    }, 1000);
+}
 
 //Reloads the window
 function refreshPage(){
