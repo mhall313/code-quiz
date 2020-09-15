@@ -6,6 +6,7 @@ var answer2 = document.querySelector("#answer2");
 var answer3 = document.querySelector("#answer3");
 var userIni = document.querySelector("#initials");
 var questResult = document.querySelector("#result");
+var resultStyle = document.querySelector("#result-style");
 var timer = document.querySelector("#timerText");
 
 //Iterative Variable for showCard function to move through array theQuestions and signal when quiz is complete
@@ -87,9 +88,14 @@ var theQuestions = [
 
 //Initially hide 3 buttons and Name input for scoreboard
 answer1.style.opacity = 0;
+answer1.style.height = "0";
 answer2.style.opacity = 0;
+answer2.style.height = "0";
 answer3.style.opacity = 0;
+answer3.style.height = "0";
 userIni.style.opacity = 0;
+userIni.style.height = "0";
+resultStyle.style.opacity = 0;
 
 //Initial set up to show quiz instructions and Start in button
 quizQuestion.append("Test your coding knowledge before the time runs out! Get an answer wrong and the time drops by 10 seconds. When you're done, log your high score!");
@@ -106,6 +112,7 @@ answer0.addEventListener("click",function(){
 function showCard(event){
     //Assigns text content of the buttons clicked/event to the variable target
     var target = event.target.textContent;
+    resultStyle.style.opacity = .7;
     //When i is 0 and start is clicked, show index 0 of theQuestions array with 4 answer selections the execute function showResult
     if ( i === 0){
         var questionText = theQuestions[i].question.toString();
@@ -115,6 +122,7 @@ function showCard(event){
         for(var j = 0; j < theQuestions[i].answers.length; j++){
             this["answer" + j].textContent = theQuestions[i].answers[j];
             this["answer"+j].style.opacity = 1;
+            this["answer"+j].style.height = "auto";
         };
         showResult();
     }
@@ -127,6 +135,7 @@ function showCard(event){
         for(var j = 0; j < theQuestions[i].answers.length; j++){
             this["answer" + j].textContent = theQuestions[i].answers[j];
             this["answer"+j].style.opacity = 1;
+            this["answer"+j].style.height = "auto";
         };
         //Store the users click to local storage as userInput[i] then execute function showResult
         localStorage.setItem("userInput" + i, target);
@@ -138,6 +147,7 @@ function showCard(event){
         showResult();
         quizQuestion.innerHTML = "You've finished! Your score is " + score + " melanpoints! Enter your name below and click submit to save your score."; 
         timer.textContent = "Quiz Complete";
+        userIni.style.height = "75px";
         userIni.style.opacity = 1;
         questResult.innerHTML = "";
         questResult.append("Bring in the Dancing Lobsters!");
@@ -153,6 +163,8 @@ function showCard(event){
         //Adjusts remaining buttons so invisible
         answer2.style.opacity = 0;
         answer3.style.opacity = 0;
+        answer2.style.height = "0";
+        answer3.style.height = "0";
     }
 }
 

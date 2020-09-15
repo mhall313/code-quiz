@@ -34,14 +34,19 @@
   .card-title{
     font-weight: bolder;
   }
+  #result-style{
+    margin-top:0;
+    padding-top: 0;
+  }
 
   .card{
     border-color: white;
     opacity: .7;
+    margin-bottom: 0;
   }
 
   #initials{
-    margin-bottom:10px;
+    margin-bottom:0px;
   }
 
   /*Width of screen at 768px or below - adjust About me/Bio image to 50% of the container/wrapper */
