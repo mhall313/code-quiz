@@ -7,7 +7,8 @@ var answer3 = document.querySelector("#answer3");
 var questResult = document.querySelector("#result");
 var timer = document.querySelector("#timerText");
 
-var quizComp = 0;
+//Iterative Variable for showCard function to move through array theQuestions and signal when quiz is complete
+var i = 0;
 
 //Variable to increment timer
 var count = 59;
@@ -101,9 +102,8 @@ answer0.addEventListener("click",function(){
 
 //Building each card - function to iterate through array theQuestions containing questions and answers choices, and correct answer
 function showCard(){
-    //Starts quiz by displaying the first element of theQuestions array. All other buttons disappear through opacity styling. Increase array increment by 1
-    //When within the length of theQuestions array, display each elent of the array with all button opacity set to 1 (visible). Increase array increment by 1
-    for(var i = 0; i < theQuestions.length; i++){
+    //When within the length of theQuestions array, display each elment of the array with all button opacity set to 1 (visible). Increase array increment by 1
+    if(i < theQuestions.length){
         var questionText = theQuestions[i].question.toString();
         quizQuestion.innerHTML = "";
         //Show answer buttons and populate with next questions answer choices
@@ -116,9 +116,21 @@ function showCard(){
         for(var j = 0; j < theQuestions[i].answers.length; j++){
             this["answer" + j].textContent = theQuestions[i].answers[j];
         };
+        answer0.addEventListener("click",function(){
+            localStorage.setItem("userInput"+(i), answer0.innerHTML);
+        });
+        answer1.addEventListener("click",function(){
+            localStorage.setItem("userInput"+(i), answer1.innerHTML);
+        });
+        answer2.addEventListener("click",function(){
+            localStorage.setItem("userInput"+(i), answer2.innerHTML);
+        });
+        answer3.addEventListener("click",function(){
+            localStorage.setItem("userInput"+(i), answer3.innerHTML);
+        });
     }
     //Once all questions are answered within the time limit
-    if(i > theQuestions.length) {
+    else {
         quizQuestion.innerHTML = "You've finished!"; // Add in what the score is
         timer.textContent = "Quiz Complete";
 
@@ -134,8 +146,9 @@ function showCard(){
         answer2.style.opacity = 0;
         answer3.style.opacity = 0;
     }
-    quizComp ++;
+    i ++;
 }
+
 //Sets the interval to count down in all instances when count is greater than 0 and if the quiz is not complete
 function startTimer(){
     interval = setInterval(function() {
@@ -151,7 +164,7 @@ function startTimer(){
             answer3.style.opacity = 0;
         }
         //Once all questions are answeres, the time is cleared and the timer displays "Quiz Complete"
-        else if (quizComp >= 7){
+        else if (i >= 7){
             clearInterval(interval);
             timer.textContent = "Quiz Complete.";
         }
@@ -161,10 +174,10 @@ function startTimer(){
             timer.textContent = "Time: " + count;
             count--;
         }
-    }, 1000);
+    }, 100);
 }
 
-//Reloads the window
+//Reloads the window to take quiz again
 function refreshPage(){
     window.location.reload();
 }
