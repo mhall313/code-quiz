@@ -1,16 +1,16 @@
 //Variable to access html elements
 var highSc = document.querySelector("#high-scores");
 var listSc = document.querySelector("#list-scores");
+//Adds text "High Scores" to the h5 html element
 highSc.append("High Scores");
+//initate array scores to add locally stored high scores to
 var scores = [];
 
-//what do we need to do
-//i need to adjust so that the high scores aren
-
+//Initialize function on page load
 init();
 
+//Gets locally stored high scores array and adds to array scores if the array is not empty, executes storedHS and renderHS functions
 function init(){
-
     var storedHS = JSON.parse(localStorage.getItem("scores"));
 
     if(storedHS !== null ){
@@ -20,15 +20,18 @@ function init(){
     renderHS();
 }
 
+//Gets current user name and high score from local storage and pushed to the array scores
 function storeHS(){
     var listIt = localStorage.getItem("highScore");
     var userSc = localStorage.getItem("userScore");
+    //If the page is refreshed, the most recent high score won't be added a second time to the list of high scores.
     if(scores[scores.length-1]!= (listIt + " : " + userSc + " melanpoints")){
         scores.push(listIt + " : " + userSc + " melanpoints");
         localStorage.setItem("scores", JSON.stringify(scores));
     }
 }
 
+//Creates html list elements and adds text of all locally stored high scores in the array scores
 function renderHS(){
     for(var i = 0; i < scores.length; i++){
         var daScore = scores[i];

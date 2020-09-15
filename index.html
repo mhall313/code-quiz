@@ -21,12 +21,14 @@
     </head>
     <body>
         <div class="container-fluid">
+            <!--Container with bootrap styled row for link to highscores page and quiz timer-->
             <div class="row">
                 <div class="col-sm-12">
                     <a id="hsLink" href="highscores.html">View Highscores</a>
                     <p id="timerText">Time: 60</p>
                 </div>
             </div>
+            <!--Center aligned container through bootstrap with card containing instructions, questions and answer options initated by functions showCard in javascript file javascript.js-->
             <div class="row justify-content-center">
                 <div class = "col-md-6">
                     <!-- Card to include initial instructions and quiz questions-->
@@ -45,6 +47,7 @@
                             <a href="#" class="btn btn-primary" id="answer3" onclick="showCard(event)"></a>
                         </div>
                     </div>
+                    <!-- Bootstrap styled card to display result of userinput for each question-->
                     <div class="card">
                         <div class="card-body">
                             <hr>

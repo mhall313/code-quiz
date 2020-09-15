@@ -1,4 +1,4 @@
-//Slew of variables to call upon HTML content
+//Slew of variables to call upon HTML elements in functions
 var quizQuestion = document.querySelector("#quiz-question");
 var answer0 = document.querySelector("#answer0");
 var answer1 = document.querySelector("#answer1");
@@ -10,12 +10,12 @@ var timer = document.querySelector("#timerText");
 
 //Iterative Variable for showCard function to move through array theQuestions and signal when quiz is complete
 var i = 0;
-//Variable to increment timer
+//Variable to increment timer - timer is shown as 60 seconds in index.html so there is a smaller lah between when the user clicks and when the timer ticks down
 var count = 59;
-//variable for score
+//variable for score - users score starts at zero
 var score = 0;
 
-//Variable containing quiz content - Quiz questions, answer choices and correct answers. Six total elements including the instructions
+//Variable containing quiz content - 6 total elements including quiz questions, answer choices and correct answers
 var theQuestions = [
     //First Question
     {
@@ -95,29 +95,30 @@ userIni.style.opacity = 0;
 quizQuestion.append("Test your coding knowledge before the time runs out! Get an answer wrong and the time drops by 10 seconds. When you're done, log your high score!");
 answer0.innerHTML = "Start!";
 
-//Star quiz and timer one initial click on the first button
+//Start timer on initial click of the first button
 answer0.addEventListener("click",function(){
     if(count===59){
         startTimer();
     }  
 });
 
-
-//Building each card - function to iterate through array theQuestions containing questions and answers choices, and correct answer
+//Function to build each card/question of the quiz and log user input of button clicked to local storage - iterate through array theQuestions using variable i and log clicks to local storage. Once the user has reached the end of array theQuestions, HTML elements are populated with user's score and buttons to try again or submit name to scoreboard.
 function showCard(event){
+    //Assigns text content of the buttons clicked/event to the variable target
     var target = event.target.textContent;
-    //When within the length of theQuestions array, display each elment of the array with all button opacity set to 1 (visible). Increase array increment by 1
+    //When i is 0 and start is clicked, show index 0 of theQuestions array with 4 answer selections the execute function showResult
     if ( i === 0){
         var questionText = theQuestions[i].question.toString();
         quizQuestion.innerHTML = "";
         quizQuestion.append(questionText);
-        //Show answer buttons and populate with next questions
+        //Show answer buttons and populate with answers in order of index
         for(var j = 0; j < theQuestions[i].answers.length; j++){
             this["answer" + j].textContent = theQuestions[i].answers[j];
             this["answer"+j].style.opacity = 1;
         };
         showResult();
     }
+    ///When within the length of theQuestions array, display each elment of the array with all button opacity set to 1 (visible). Increase array increment i by 1, store input/button clicked to local storage and execute function showResult
     else if(i < theQuestions.length){
         var questionText = theQuestions[i].question.toString();
         quizQuestion.innerHTML = "";
@@ -127,12 +128,11 @@ function showCard(event){
             this["answer" + j].textContent = theQuestions[i].answers[j];
             this["answer"+j].style.opacity = 1;
         };
-        //Sotre the users click to local storage as userInput[i]
+        //Store the users click to local storage as userInput[i] then execute function showResult
         localStorage.setItem("userInput" + i, target);
-        //If the users input equals the correct answers, add points. If the users input is wrong, do not add point and decrement an extra 10 seconds
         showResult();
     }
-    //Once all questions are answered within the time limit
+    //Once all questions are answered within the time limit display user's score and input feild to submit high score
     else if (i === theQuestions.length){
         localStorage.setItem(("userInput" + i), target);
         showResult();
@@ -164,11 +164,13 @@ function showResult(){
     else if(i <= theQuestions.length){
         var correctText = theQuestions[(i-1)].correctAnswer.toString();
         var userText = localStorage.getItem("userInput"+i);
+        //If user gets question correct, add 1000 melanpoints
         if (correctText === userText){
             questResult.innerHTML = "";
             questResult.append("Correct! The answer was " + correctText);
             score = score + 1000;
         }
+        //If user gets the question wrong, deduct an additional 10 seconds from the timer
         else{
             questResult.innerHTML = "";
             questResult.append("Incorrect. The answer was not " + userText);
@@ -184,7 +186,7 @@ function showResult(){
 //Sets the interval to count down in all instances when count is greater than 0 and if the quiz is not complete
 function startTimer(){
     interval = setInterval(function() {
-        //When the timer hits zero, the timer stops and displays zero, the bold text reads "Time's out!" and the first button is visible as a Try again/refresh button. All other buttons opacity is set to 0 and not click listeners are present.
+        //When the timer hits zero, the timer stops and displays zero, the bold text reads "Time's out!" and the first button is visible as a Try again/refresh button. All other buttons opacity are set to 0 
         if (count<0) {
             clearInterval(interval);
             timer.textContent = "Time: 0";
@@ -201,15 +203,15 @@ function startTimer(){
         else if (i >= 6){
             clearInterval(interval);
         }
-        //For the duration of the quiz the timer continues to count down. If the user answers incorrectly, the timer decrements an additional 10 seconds
+        //For the duration of the quiz the timer continues to count down.
         else{ 
             timer.textContent = "Time: " + count;
             count--;
         }
-    }, 1000);
+    }, 1000); //1000 = decrement every second
 }
 
-//Commentary
+//Logs the users score and name to local storage and redirects to highscores html
 function submitScore(){
     // take userIni inner text and store to local storage with score
     localStorage.setItem("highScore", userIni.value);
@@ -217,7 +219,7 @@ function submitScore(){
     location.href = "highscores.html"
 }
 
-//Reloads the window to take quiz again
+//Reloads the window to take quiz again and removes user input/click values from local storage
 function refreshPage(){
     window.location.reload();
     for(var j = 0; j < 7; j++){
