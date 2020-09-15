@@ -92,13 +92,13 @@ answer3.style.opacity = 0;
 quizQuestion.append("Test your coding knowledge before the time runs out! Get an answer wrong and the time drops by 10 seconds. When you're done, log your high score!");
 answer0.innerHTML = "Start!";
 
-//Star quiz and timer
+//Star quiz and timer one initial click on the first button
 answer0.addEventListener("click",function(){
     if(count===59){
-        showCard();
         startTimer();
-    }    
+    }  
 });
+
 
 //Building each card - function to iterate through array theQuestions containing questions and answers choices, and correct answer
 function showCard(){
@@ -116,6 +116,7 @@ function showCard(){
         for(var j = 0; j < theQuestions[i].answers.length; j++){
             this["answer" + j].textContent = theQuestions[i].answers[j];
         };
+        console.log(i);
         answer0.addEventListener("click",function(){
             localStorage.setItem("userInput"+(i), answer0.innerHTML);
         });
@@ -128,6 +129,7 @@ function showCard(){
         answer3.addEventListener("click",function(){
             localStorage.setItem("userInput"+(i), answer3.innerHTML);
         });
+        i++;
     }
     //Once all questions are answered within the time limit
     else {
@@ -146,7 +148,6 @@ function showCard(){
         answer2.style.opacity = 0;
         answer3.style.opacity = 0;
     }
-    i ++;
 }
 
 //Sets the interval to count down in all instances when count is greater than 0 and if the quiz is not complete
@@ -174,7 +175,11 @@ function startTimer(){
             timer.textContent = "Time: " + count;
             count--;
         }
-    }, 100);
+    }, 1000);
+}
+//Commentary
+function submitScore(){
+
 }
 
 //Reloads the window to take quiz again
