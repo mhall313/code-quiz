@@ -9,6 +9,7 @@ var scores = [];
 //we need to then display the stored high scores in a list
 init();
 storeHS();
+renderHS();
 
 function init(){
 
@@ -17,7 +18,6 @@ function init(){
     if(storedHS !== null ){
         scores = storedHS;
     }
-    renderHS();
 }
 
 function storeHS(){

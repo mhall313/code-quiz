@@ -188,7 +188,7 @@ function startTimer(){
         if (count<0) {
             clearInterval(interval);
             timer.textContent = "Time: 0";
-            quizQuestion.innerHTML = "Time's out! Your score is " + score + ". Try again, finish the quiz and log your score to the score board!";
+            quizQuestion.innerHTML = "Time's out! Your score is " + score + " melanpoints. Try again, finish the quiz and log your score to the score board!";
             answer0.innerHTML = "Try Again"
             questResult.innerHTML = "";
             answer0.addEventListener("click", refreshPage);
