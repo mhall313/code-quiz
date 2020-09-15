@@ -79,7 +79,7 @@ var theQuestions = [
                 "3. both 1. and 2.",
                 "4. neither 1. nor 2."
             ],
-            correctAnswer: "3. cboth 1. and 2."
+            correctAnswer: "3. both 1. and 2."
         }
 ];
 
@@ -118,6 +118,7 @@ function showCard(event){
     }
     //Once all questions are answered within the time limit
     else {
+        localStorage.setItem("userInput" + (i), target);
         quizQuestion.innerHTML = "You've finished!"; // Add in what the score is
         timer.textContent = "Quiz Complete";
 
@@ -150,8 +151,8 @@ function startTimer(){
             answer3.style.opacity = 0;
 
         }
-        //Once all questions are answeres, the time is cleared and the timer displays "Quiz Complete"
-        else if (i >= 7){
+        //Once all questions are answered, the time is cleared and the timer displays "Quiz Complete"
+        else if (i >= 6){
             clearInterval(interval);
         }
         //For the duration of the quiz the timer continue to count down. If the user answers incorrectly, the timer decrements an additional 10 seconds
@@ -160,7 +161,7 @@ function startTimer(){
             timer.textContent = "Time: " + count;
             count--;
         }
-    }, 100);
+    }, 1000);
 }
 //Commentary
 function submitScore(){
@@ -170,5 +171,7 @@ function submitScore(){
 //Reloads the window to take quiz again
 function refreshPage(){
     window.location.reload();
-    localStorage.clear();
+    for(var j = 0; j < 7; j++){
+        localStorage.removeItem("userInput" +j);
+    }
 }
