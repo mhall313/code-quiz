@@ -33,11 +33,17 @@ function storeHS(){
 
 //Creates html list elements and adds text of all locally stored high scores in the array scores
 function renderHS(){
-    for(var i = 0; i < scores.length; i++){
-        var daScore = scores[i];
-        var liEl = document.createElement("li");
-        liEl.textContent = daScore;
-        listSc.appendChild(liEl);
+    if(scores[0] != "null : null melanpoints"){
+        for(var i = 0; i < scores.length; i++){
+            var daScore = scores[i];
+            var liEl = document.createElement("li");
+            liEl.textContent = daScore;
+            listSc.appendChild(liEl);
+        }
+    }
+    else{
+        highSc.innerHTML = "";
+        highSc.append("Click the link in the top left corner to take the quiz and log your score!");
     }
 
 }
