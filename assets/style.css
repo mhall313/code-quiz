@@ -1,23 +1,34 @@
 * {
     box-sizing: border-box;
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 28px;
   }
   
   body {
     margin-left: 3px;
     margin-right: 3px;
     line-height: 1.5;
+    background-image: url("Hermione-hand-raised-mobile.jpg"); 
+    background-color:black; /* Used if the image is unavailable */ 
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain;
+    background-attachment:fixed;
   }
 
   #hsLink {
     float: left;
+    text-decoration: underline;
   }
 
   #timerText {
     float: right;
+    color: white;
   }
 
   .btn{
     margin:2px;
+    opacity: 1;
   }
 
   .card-title{
@@ -25,9 +36,18 @@
   }
 
   .card{
-      border-color: white;
+    border-color: white;
+    opacity: .7;
   }
 
   #initials{
     margin-bottom:10px;
   }
+
+  /*Width of screen at 768px or below - adjust About me/Bio image to 50% of the container/wrapper */
+@media screen and (max-width: 768px) {
+}
+/*Width of screen at 400px or below - adjust bio image to be 67% the width of the container/wrapper, adjust padding to zero on the container and adjust images in catfolio to be 90% of the witdth of the wrapper*/
+@media screen and (max-width: 400px) {
+}
+
