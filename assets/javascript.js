@@ -118,6 +118,7 @@ function showCard(event){
         var questionText = theQuestions[i].question.toString();
         quizQuestion.innerHTML = "";
         quizQuestion.append(questionText);
+        resultStyle.style.opacity = 0;
         //Show answer buttons and populate with answers in order of index
         for(var j = 0; j < theQuestions[i].answers.length; j++){
             this["answer" + j].textContent = theQuestions[i].answers[j];
