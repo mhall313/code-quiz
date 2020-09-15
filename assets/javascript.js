@@ -208,8 +208,14 @@ function startTimer(){
             questResult.innerHTML = "";
             answer0.addEventListener("click", refreshPage);
             answer1.style.opacity = 0;
+            answer1.style.height = "0";
             answer2.style.opacity = 0;
+            answer2.style.height = "0";
             answer3.style.opacity = 0;
+            answer3.style.height = "0";
+            userIni.style.opacity = 0;
+            userIni.style.height = "0";
+            resultStyle.style.opacity = 0;
 
         }
         //Once all questions are answered, the time is cleared and the timer displays "Quiz Complete"
